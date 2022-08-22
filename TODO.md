@@ -1,0 +1,3 @@
+- Refactor Client / TCP classes.
+- Rename things like SendData(Packet packet) to SendPacket(Packet packet)
+- Refactor Packet class, change things like Length() to just Length using a property with a custom getter.
