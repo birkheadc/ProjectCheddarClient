@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     }
 
     [SerializeField] private Camera cam;
-    [SerializeField] private PlayerControllerMover mover;
+    [SerializeField] private PlayerMover mover;
     // Start is called before the first frame update
     void Start()
     {

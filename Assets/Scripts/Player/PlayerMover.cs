@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControllerMover : MonoBehaviour
+public class PlayerMover : MonoBehaviour
 {
+    [SerializeField] private PlayerManager playerManager;
     [SerializeField] private float speed;
 
     private Vector2 panVector = new();

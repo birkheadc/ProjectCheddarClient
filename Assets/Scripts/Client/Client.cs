@@ -22,9 +22,14 @@ public class Client : MonoBehaviour
         tcp = new(this);
         tcp.Connect();
     }
-
     public void ExecuteOnMainThread(Action action)
     {
         threadManager.ExecuteOnMainThread(action);
+    }
+
+    public void SendUpdatedPositionToServer(Vector2Int position)
+    {
+        // Todo
+        Debug.Log("New chunk: " + position.ToString());
     }
 }

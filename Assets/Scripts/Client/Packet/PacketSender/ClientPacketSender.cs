@@ -6,11 +6,13 @@ public class ClientPacketSender
 {
     private Client client;
     private Tcp tcp;
+    private PacketBuilder packetBuilder;
 
     public ClientPacketSender(Client client, Tcp tcp)
     {
         this.client = client;
         this.tcp = tcp;
+        packetBuilder = new();
     }
     private void SendTcpData(Packet packet)
     {
@@ -20,15 +22,11 @@ public class ClientPacketSender
 
     public void SendWelcomeReceived()
     {
-        using (Packet packet = new((int)ClientPackets.WelcomeReceived))
-        {
-            packet.Write(client.Id.ToString());
-            SendTcpData(packet);
-        }
+        using (Packet packet = packetBuilder.BuildWelcomeReceivedPacket(client.Id)) SendTcpData(packet);
     }
 
     public void SendUpdatePlayerPosition()
     {
-        
+        using (Packet packet = packetBuilder.BuildUpdatePlayerPositionPacket()) SendTcpData(packet);
     }
 }

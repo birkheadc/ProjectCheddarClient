@@ -527,10 +527,10 @@ GameObject:
   - component: {fileID: 1027660768}
   - component: {fileID: 1027660769}
   - component: {fileID: 1027660770}
-  - component: {fileID: 1027660771}
   - component: {fileID: 1027660772}
+  - component: {fileID: 1027660773}
   m_Layer: 0
-  m_Name: PlayerController
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -565,7 +565,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 128376190}
-  mover: {fileID: 1027660771}
+  mover: {fileID: 0}
 --- !u!114 &1027660770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -628,19 +628,6 @@ MonoBehaviour:
   m_DefaultActionMap: Normal
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &1027660771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1027660767}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 763d363096d561f40873694e76578a53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
 --- !u!114 &1027660772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -654,6 +641,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pawnPrefab: {fileID: 0}
+--- !u!114 &1027660773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1027660767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 454b5621805e4d519bfc891449dc1f68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 1027660769}
+  pawnManager: {fileID: 1027660772}
 --- !u!1 &1183095269
 GameObject:
   m_ObjectHideFlags: 0

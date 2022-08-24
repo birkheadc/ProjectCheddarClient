@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     [SerializeField] private Client client;
+    public Client Client { get { return client; } }
+    private PlayerManager playerManager;
+    public PlayerManager PlayerManager { get { return playerManager; } set { playerManager = value; } }
 
     private void Awake()
     {

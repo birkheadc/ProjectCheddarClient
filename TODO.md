@@ -1,5 +1,7 @@
 # Todo
 
+## Write a better readme, including what this game is planned to be
+
 ## Refactor client / tcp / packet classes
 - Rename things like SendData(Packet packet) to SendPacket(Packet packet)
 - Refactor Packet class, change things like Length() to just Length using a property with a custom getter.
