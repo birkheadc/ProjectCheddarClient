@@ -2,22 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClientPacketSender : MonoBehaviour
+public class ClientPacketSender
 {
-    [SerializeField] private Client client;
+    private Client client;
+    private Tcp tcp;
+
+    public ClientPacketSender(Client client, Tcp tcp)
+    {
+        this.client = client;
+        this.tcp = tcp;
+    }
     private void SendTcpData(Packet packet)
     {
         packet.WriteLength();
-        client.SendData(packet);
-
+        tcp.SendData(packet);
     }
 
-    public void welcomeReceived()
+    public void SendWelcomeReceived()
     {
-        using (Packet packet = new((int)ClientPackets.welcomeReceived))
+        using (Packet packet = new((int)ClientPackets.WelcomeReceived))
         {
             packet.Write(client.Id.ToString());
             SendTcpData(packet);
         }
+    }
+
+    public void SendUpdatePlayerPosition()
+    {
+        
     }
 }

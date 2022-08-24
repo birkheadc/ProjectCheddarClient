@@ -3,11 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClientPacketHandler : MonoBehaviour
+public class ClientPacketHandler
 {
-    [SerializeField] private Client client;
-    [SerializeField] private ClientPacketSender clientSend;
-    public void Welcome(Packet packet)
+    private Client client;
+    private Tcp tcp;
+
+    public ClientPacketHandler(Client client, Tcp tcp)
+    {
+        this.client = client;
+        this.tcp = tcp;
+    }
+    public void HandleWelcome(Packet packet)
     {
         string msg = packet.ReadString();
         Guid clientId = Guid.Parse(packet.ReadString());
@@ -15,6 +21,6 @@ public class ClientPacketHandler : MonoBehaviour
         Debug.Log("Server: " + msg);
         client.Id = clientId;
 
-        clientSend.welcomeReceived();
+        tcp.SendPacket((int)ClientPackets.WelcomeReceived);
     }
 }

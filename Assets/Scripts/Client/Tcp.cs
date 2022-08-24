@@ -6,28 +6,27 @@ using UnityEngine;
 public class Tcp
 {
     private Client client;
-    public Client Client
-    {
-        get
-        {
-            return client;
-        }
-        set
-        {
-            client = value;
-        }
-    }
     private TcpClient socket;
     private NetworkStream stream;
     private Packet receiveData;
     private byte[] receiveBuffer;
     private delegate void PacketHandler(Packet packet);
     private static Dictionary<int, PacketHandler> packetHandlers;
-    private readonly GameManager gameManager;
+    private delegate void PacketSender();
+    private static Dictionary<int, PacketSender> packetSenders;
+    private readonly ClientPacketHandler packetHandler;
+    private readonly ClientPacketSender packetSender;
+
+    public Tcp(Client client)
+    {
+        this.client = client;
+        packetHandler = new(client, this);
+        packetSender = new(client, this);
+        InitializeClientData();
+    }
 
     public void Connect()
     {
-        InitializeClientData();
         socket = new()
         {
             ReceiveBufferSize = Client.DataBufferSize,
@@ -81,7 +80,6 @@ public class Tcp
         int packetLength = 0;
 
         receiveData.SetBytes(data);
-
         if (receiveData.UnreadLength() >= 4)
         {
             packetLength =  receiveData.ReadInt();
@@ -99,7 +97,6 @@ public class Tcp
                 {
                     int packetId = packet.ReadInt();
                     packetHandlers[packetId](packet);
-                    // client.ClientHandle.Welcome(packet);
                 }
             });
 
@@ -120,13 +117,25 @@ public class Tcp
 
     private void InitializeClientData()
     {
-        packetHandlers = new Dictionary<int, PacketHandler>()
+        packetHandlers = new()
         {
             {
-                (int)ServerPackets.welcome, client.ClientHandle.Welcome
+                (int)ServerPackets.Welcome, packetHandler.HandleWelcome
+            }
+        };
+
+        packetSenders = new()
+        {
+            {
+                (int)ClientPackets.WelcomeReceived, packetSender.SendWelcomeReceived
             }
         };
         Debug.Log("Client Data initialized.");
+    }
+
+    public void SendPacket(int packetId)
+    {
+        packetSenders[packetId]();
     }
 
     public void SendData(Packet packet)

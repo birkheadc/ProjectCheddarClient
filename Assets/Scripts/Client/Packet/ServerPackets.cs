@@ -1,4 +1,4 @@
 public enum ServerPackets
 {
-    welcome = 1
+    Welcome = 1
 }

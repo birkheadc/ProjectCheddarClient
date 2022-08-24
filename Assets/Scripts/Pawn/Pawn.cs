@@ -23,7 +23,6 @@ public class Pawn : MonoBehaviour
     void Start()
     {
         playerId = Guid.Empty;
-        Debug.Log(playerId);
     }
 
     // Update is called once per frame
