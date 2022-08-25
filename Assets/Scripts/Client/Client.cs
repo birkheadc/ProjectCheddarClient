@@ -27,9 +27,15 @@ public class Client : MonoBehaviour
         threadManager.ExecuteOnMainThread(action);
     }
 
-    public void SendUpdatedPositionToServer(Vector2Int position)
+    public void SendPlayerSpawnToServer(Vector2Int currentChunk)
     {
-        // Todo
-        Debug.Log("New chunk: " + position.ToString());
+        PlayerSpawnPacketData packetData = new(currentChunk);
+        tcp.SendPacket(ClientPacket.PlayerSpawn, packetData);
+    }
+
+    public void SendUpdatedPositionToServer(Vector2Int lastChunk, Vector2Int currentChunk)
+    {
+        UpdatePlayerPositionPacketData packetData = new(lastChunk, currentChunk);
+        tcp.SendPacket(ClientPacket.UpdatePlayerPosition, packetData);
     }
 }

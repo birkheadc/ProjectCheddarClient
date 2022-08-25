@@ -10,10 +10,11 @@ public class Tcp
     private NetworkStream stream;
     private Packet receiveData;
     private byte[] receiveBuffer;
-    private delegate void PacketHandler(Packet packet);
-    private static Dictionary<int, PacketHandler> packetHandlers;
-    private delegate void PacketSender();
-    private static Dictionary<int, PacketSender> packetSenders;
+    private delegate void PacketHandleDelegate(Packet packet);
+    private static Dictionary<int, PacketHandleDelegate> packetHandleDelegates;
+    // private delegate void PacketSendDelegate();
+    // private static Dictionary<int, PacketSendDelegate> packetSendDelegates;
+    private static Dictionary<ClientPacket, Action<PacketData>> packetSendActions;
     private readonly ClientPacketHandler packetHandler;
     private readonly ClientPacketSender packetSender;
 
@@ -96,7 +97,7 @@ public class Tcp
                 using (Packet packet = new(packetBytes))
                 {
                     int packetId = packet.ReadInt();
-                    packetHandlers[packetId](packet);
+                    packetHandleDelegates[packetId](packet);
                 }
             });
 
@@ -117,25 +118,31 @@ public class Tcp
 
     private void InitializeClientData()
     {
-        packetHandlers = new()
+        packetHandleDelegates = new()
         {
             {
-                (int)ServerPackets.Welcome, packetHandler.HandleWelcome
+                (int)ServerPacket.Welcome, packetHandler.HandleWelcome
             }
         };
 
-        packetSenders = new()
+        packetSendActions = new()
         {
             {
-                (int)ClientPackets.WelcomeReceived, packetSender.SendWelcomeReceived
+                ClientPacket.WelcomeReceived, o => packetSender.SendWelcomeReceived()
+            },
+            {
+                ClientPacket.UpdatePlayerPosition, o => packetSender.SendUpdatePlayerPosition(o)
+            },
+            {
+                ClientPacket.PlayerSpawn, o => packetSender.SendPlayerSpawn(o)
             }
         };
         Debug.Log("Client Data initialized.");
     }
 
-    public void SendPacket(int packetId)
+    public void SendPacket(ClientPacket packetType, PacketData packetData)
     {
-        packetSenders[packetId]();
+        packetSendActions[packetType].Invoke(packetData);
     }
 
     public void SendData(Packet packet)

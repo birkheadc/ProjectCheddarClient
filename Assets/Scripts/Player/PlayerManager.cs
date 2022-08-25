@@ -26,6 +26,14 @@ public class PlayerManager : MonoBehaviour
     {
         client = GameManager.Instance.Client;
         GameManager.Instance.PlayerManager = this;
+        InitializePosition();
+        client.SendPlayerSpawnToServer(currentChunk);
+    }
+
+    private void InitializePosition()
+    {
+        position = gameObject.transform.position;
+        currentChunk = ChunkCalculator.CalculateChunkFromPosition(position);
     }
 
     private void CheckPosition()
@@ -36,8 +44,9 @@ public class PlayerManager : MonoBehaviour
             Vector2Int chunk = ChunkCalculator.CalculateChunkFromPosition(position);
             if (Vector2Int.Equals(chunk, currentChunk) == false)
             {
+                Vector2Int lastChunk = currentChunk;
                 currentChunk = chunk;
-                client.SendUpdatedPositionToServer(currentChunk);
+                client.SendUpdatedPositionToServer(lastChunk, currentChunk);
             }
         }
     }

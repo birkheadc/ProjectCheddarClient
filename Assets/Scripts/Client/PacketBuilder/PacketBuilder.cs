@@ -3,22 +3,26 @@ using UnityEngine;
 
 public class PacketBuilder
 {
+    // Todo: This code is so copy-pasty, is there a better way to do this?
     public Packet BuildWelcomeReceivedPacket(Guid clientId)
     {
-        Packet packet = new((int)ClientPackets.WelcomeReceived);
+        Packet packet = new((int)ClientPacket.WelcomeReceived);
         packet.Write(clientId.ToString());
         return packet;
     }
 
-    public Packet BuildUpdatePlayerPositionPacket()
+    public Packet BuildUpdatePlayerPositionPacket(Vector2Int lastChunk, Vector2Int currentChunk)
     {
-        // Todo: This method should be supplied the players current and last position, for now we just supply dummy values.
-        Vector2Int last = new(0, -1);
-        Vector2Int current = new(0, 0);
+        Packet packet = new((int)ClientPacket.UpdatePlayerPosition);
+        packet.Write(lastChunk);
+        packet.Write(currentChunk);
+        return packet;
+    }
 
-        Packet packet = new((int)ClientPackets.UpdatePlayerPosition);
-        packet.Write(last);
-        packet.Write(current);
+    public Packet BuildPlayerSpawnPacket(Vector2Int currentChunk)
+    {
+        Packet packet = new((int)ClientPacket.PlayerSpawn);
+        packet.Write(currentChunk);
         return packet;
     }
 }

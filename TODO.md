@@ -5,6 +5,7 @@
 ## Refactor client / tcp / packet classes
 - Rename things like SendData(Packet packet) to SendPacket(Packet packet)
 - Refactor Packet class, change things like Length() to just Length using a property with a custom getter.
+- There has to be a better way of handling packet creation than what I'm doing now. Each Send{X}Packet method on the PacketSender class is doing mostly the same thing just with different parameters...
 
 ## Design chunk distrubution method
 ### This may or may not be a good way to do this, but my current plan is to...

@@ -21,6 +21,6 @@ public class ClientPacketHandler
         Debug.Log("Server: " + msg);
         client.Id = clientId;
 
-        tcp.SendPacket((int)ClientPackets.WelcomeReceived);
+        tcp.SendPacket(ClientPacket.WelcomeReceived, null);
     }
 }
